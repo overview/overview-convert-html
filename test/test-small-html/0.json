@@ -1,0 +1,10 @@
+{
+  "filename": "input.html",
+  "languageCode": "fr",
+  "wantOcr": false,
+  "wantSplitByPage": false,
+  "contentType": "application/pdf",
+  "metadata": {
+    "foo": "bar"
+  }
+}

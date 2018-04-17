@@ -1,0 +1,49 @@
+#!/bin/bash
+
+set -e
+
+# Put HTML input in "input.html", converting if needed
+FILENAME=$(echo "$1" | jq -r .filename)
+case "$FILENAME" in
+  *.rtf)
+    unrtf input.blob > input.html
+    ;;
+  *)
+    mv input.blob input.html
+    ;;
+esac
+
+# Set up /tmp/slimerjs-profile, a Firefox profile directory
+if [ ! -d /tmp/slimerjs-profile-template ]; then
+  # Create a profile "template" on first run. We'll copy that profile directory
+  # for every run, which is faster than forcing Firefox to build a fresh one.
+  mkdir /tmp/slimerjs-profile-template
+  echo 'slimer.exit()' > /tmp/noop.js
+  slimerjs \
+    --profile /tmp/slimerjs-profile-template \
+    --headless \
+    /tmp/noop.js
+fi
+rm -rf /tmp/slimerjs-profile
+cp -a /tmp/slimerjs-profile-template /tmp/slimerjs-profile
+
+# Output 0.blob (PDF) and 0.txt
+slimerjs \
+  --profile /tmp/slimerjs-profile \
+  --headless \
+  /app/convert.js
+
+# SlimerJS renders screenshots, but they're of the _page_, not the _PDF_. We'll
+# generate a screenshot of the PDF.
+pdftocairo \
+    -jpeg \
+    -singlefile \
+    -scale-to 700 \
+    0.blob \
+    0-thumbnail
+
+# Output JSON
+#
+# jq is an odd choice when we have Node installed ... but it's easier than
+# passing a command-line argument to convert.js (which is invoked by SlimerJS)
+echo "$1" | jq '{ filename: .filename, languageCode: .languageCode, wantOcr: false, wantSplitByPage: .wantSplitByPage, contentType: "application/pdf", metadata: .metadata }' > 0.json

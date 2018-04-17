@@ -1,0 +1,8 @@
+{
+  "filename": "input.html",
+  "metadata": { "foo": "bar" },
+  "contentType": "application/octet-stream",
+  "languageCode": "fr",
+  "wantOcr": true,
+  "wantSplitByPage": false
+}
