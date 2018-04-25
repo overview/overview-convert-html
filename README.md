@@ -11,10 +11,16 @@ Other input JSON (in particular, `"wantSplitByPage"`) is passed through.
 We convert HTML using Firefox. See
 [benchmarks](https://github.com/adamhooper/html-to-pdf-benchmarks) for rationale.
 
-This converter also handles RTF by using
-[unrtf](https://www.gnu.org/software/unrtf/unrtf.html) to convert to HTML.
-It detects RTF by filename ending with ".rtf". Sorry: unrtf doesn't handle
-images.
+We convert RTF using [Ted](https://www.nllgg.nl/Ted/) and then
+[Ghostscript](https://www.ghostscript.com/). The RTF-conversion landscape on
+Linux is sad: [unrtf](https://www.gnu.org/software/unrtf/) doesn't support
+images, and [LibreOffice](https://www.libreoffice.org/) is slow and unreliable.
+Ted is obsolete, but it speaks RTF natively, and it converts much faster than
+the competition -- even with the additional Ghostscript step.
+
+We bundle HTML and RTF conversion into the same package because both use the
+same dependencies, and we want both to have a large font stack -- making both
+require a heavyweight Docker image with the same files.
 
 # Testing
 

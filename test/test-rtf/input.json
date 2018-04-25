@@ -1,7 +1,7 @@
 {
   "filename": "sample.rtf",
   "metadata": { "foo": "bar" },
-  "contentType": "application/octet-stream",
+  "contentType": "application/rtf",
   "languageCode": "fr",
   "wantOcr": true,
   "wantSplitByPage": false
