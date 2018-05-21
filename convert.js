@@ -1,7 +1,6 @@
 // This is invoked by SlimerJS
 const fs = require('fs') // SlimerJS "fs", not Node "fs"
 const webpage = require('webpage')
-const system = require('system')
 
 const page = webpage.create()
 page.settings.javascriptEnabled = false

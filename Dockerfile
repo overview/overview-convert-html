@@ -39,15 +39,15 @@ RUN sed -i -e 's/stretch main$/stretch main contrib/' /etc/apt/sources.list \
   && rm -rf /var/cache/debconf/* /var/lib/apt/lists/* /var/log/* /tmp/* /var/tmp/*
 
 # Install Firefox. (Debian provides firefox-esr, which is too old for SlimerJS.)
-RUN curl -o - --location https://download-installer.cdn.mozilla.net/pub/firefox/releases/59.0.2/linux-x86_64/en-US/firefox-59.0.2.tar.bz2 \
+RUN curl -o - --location https://download-installer.cdn.mozilla.net/pub/firefox/releases/60.0.1/linux-x86_64/en-US/firefox-60.0.1.tar.bz2 \
         | tar -xj -C / \
    && mkdir -p /opt \
    && mv /firefox /opt/
 # Install SlimerJS
-RUN curl -o - --location https://download.slimerjs.org/releases/1.0.0/slimerjs-1.0.0.tar.bz2 \
+RUN curl -o - --location https://github.com/adamhooper/slimerjs/releases/download/stripped-to-the-minimum.001/slimerjs-1.1.0-pre.tar.bz2 \
         | tar -xj -C / \
     && mkdir -p /opt \
-    && mv /slimerjs-1.0.0 /opt/slimerjs
+    && mv /slimerjs-1.* /opt/slimerjs
 # Put them in the PATH
 ENV PATH /opt/firefox:/opt/slimerjs:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 
@@ -107,7 +107,7 @@ RUN true \
   && rm -rf /var/cache/debconf/* /var/lib/apt/lists/* /var/log/* /tmp/* /var/tmp/*
 
 
-FROM overview/overview-convert-framework:0.0.15 AS framework
+FROM overview/overview-convert-framework:0.0.16 AS framework
 
 
 FROM os AS base
